@@ -689,6 +689,9 @@ plot(t,yt3)
 % p2
 % p02
 % max(margin,[],1)
+% abs(2/normvec(2)) / sqrt((normvec(1)/normvec(2))^2+1)
+% 2 / sqrt(sum(normvec.^2))
+% sum(normvec.^2)/2
 % hMargVecW = -normvec(1)/normvec(2);
 % hMargVecB = -d/normvec(2);
 hMargVecW = normvec;
