@@ -699,6 +699,11 @@ hMargVecB = d;
 hardMargin = max(margin,[],1);
 end
 
+%
+% Her normal için çücüklerin en büyüğü ve büyüklerin en küçüğü arasında kalan noktalardan kombinasyonlar oluşturup en optimesini o normal için seç
+% Formül de şu: 1/w^2 + alpha * \sigma(zeta) yani diyor ki marjinle alpha hyperparametresiyle çarpılan yanlış sınıflandırılmiş verilerin hata paylarının toplamını topla ve elbette bunu minimize et
+%
+
 function [Clss] = tsvm(X,hMargVecW,hMargVecB)
 % X = rdata_test
 
