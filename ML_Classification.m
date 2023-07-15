@@ -49,8 +49,11 @@ Betaski = 151;
 rdata = [[randn(40,2)+[-2 -1.5] zeros(40,1)];[randn(40,2)+[2 1.5] ones(40,1)]];
 rdata_test = randn(20,2) * 2.5
 
-[hMargVecW, hMargVecB, hardMargin] = fsvm(rdata(:,1:end-1),rdata(:,end))
-[Clss] = tsvm(rdata_test,hMargVecW,hMargVecB)
+[hMargVecW, hMargVecB, hardMargin] = fhmsvm(rdata(:,1:end-1),rdata(:,end))
+[Clss] = thmsvm(rdata_test,hMargVecW,hMargVecB)
+
+[sMargVecW, sMargVecB, softMargin] = fsmsvm(rdata(:,1:end-1),rdata(:,end),c)
+[Clss] = tsmsvm(rdata_test,sMargVecW,sMargVecB)
 
 function [Xnew] = cat2num(X,feats)
 [row,col]= size(X(:,:));
@@ -595,7 +598,7 @@ end
 function [] = tdt(X,Y)
 end
 
-function [hMargVecW, hMargVecB, hardMargin] = fsvm(X,Y)
+function [hMargVecW, hMargVecB, hardMargin] = fhmsvm(X,Y)
 % X = rdata(:,1:end-1);
 % Y = rdata(:,end);
 
@@ -699,12 +702,7 @@ hMargVecB = d;
 hardMargin = max(margin,[],1);
 end
 
-%
-% Her normal için çücüklerin en büyüğü ve büyüklerin en küçüğü arasında kalan noktalardan kombinasyonlar oluşturup en optimesini o normal için seç
-% Formül de şu: 1/w^2 + alpha * \sigma(zeta) yani diyor ki marjinle alpha hyperparametresiyle çarpılan yanlış sınıflandırılmiş verilerin hata paylarının toplamını topla ve elbette bunu minimize et
-%
-
-function [Clss] = tsvm(X,hMargVecW,hMargVecB)
+function [Clss] = thmsvm(X,hMargVecW,hMargVecB)
 % X = rdata_test
 
 projections = X * hMargVecW.' + hMargVecB;
@@ -722,3 +720,133 @@ plot(X(Clss==0,1),X(Clss==0,2),'r.','MarkerSize',12)
 hold on
 plot(X(Clss==1,1),X(Clss==1,2),'b.','MarkerSize',12)
 end
+
+function [sMargVecW, sMargVecB, softMargin] = fsmsvm(X,Y,c)
+% c = 1;
+% X = rdata(:,1:end-1);
+% Y = rdata(:,end);
+
+alpha = (0:0.1:180).';
+degress = [cos(alpha*pi/180) sqrt(1-cos(alpha*pi/180).^2)];
+
+expressions = degress * X.';
+row = length(expressions(:,1)); % sütun sayısı
+
+loss = zeros(length(degress(:,1)),1);
+supports = zeros(length(degress(:,1)),2);
+for j = 1:length(degress(:,1))
+    a = expressions(j,:).';
+
+    e = zeros(2,1);
+    e(1) = a(Y==0).'*ones(length(a(Y==0)),1)/length(a(Y==0));
+    e(2) = a(Y==1).'*ones(length(a(Y==1)),1)/length(a(Y==1));
+
+    clear max
+    [~,emax] = max(e,[],1);
+    
+    clear min
+    [~,emin] = min(e,[],1);
+    
+    a1 = a(Y==emin-1); 
+    a2 = a(Y==emax-1);
+    points = sort(a); % a(bmax<=a & a<=bmin)
+    
+    ipoints = zeros(length(points),2);
+    ipoints(:,1) = points;
+    for i = 1:length(points)
+        ipoints(i,2) = sum(points(i)==a2);
+    end
+
+    volloss = inf;
+    for k = 1:length(ipoints(:,1))
+        for l = k:length(ipoints(:,1))
+            if ipoints(k,2) == 0 && ipoints(l,2) == 1
+                marg = ipoints(l,1) - ipoints(k,1);
+                fpoz = sum(ipoints(ipoints(:,1)>ipoints(k,1) & ipoints(:,2)==0,1) - ipoints(k,1));
+                fneg = sum(ipoints(l,1) - ipoints(ipoints(:,1)<ipoints(l,1) & ipoints(:,2)==1,1));
+                m = 2/marg^2 + c*(fpoz+fneg);
+                if m < volloss
+                    volloss = m;
+                    sups = [ipoints(k,1) ipoints(l,1)];
+                end
+            end
+        end
+    end
+
+    loss(j,1) = volloss;
+    supports(j,:) = sups;
+    % margin(j,1) = bmin - bmax;
+end
+
+clear min
+[~,qmax] = min(loss,[],1);
+degress(qmax,:);
+
+p01 = supports(qmax,1)*degress(qmax,:);
+p02 = supports(qmax,2)*degress(qmax,:);
+
+% normvec = [degress(qmax,2) -degress(qmax,1)];
+normvec = degress(qmax,:);
+midpoint = (p01+p02)/2;
+syms d real
+prob = normvec * midpoint.' + d == 0; % merkezlerin ortasından geçen ve eğimini yukarıda bulduğumuz doğru dekleminin sabitine karar veriyoruz
+d = double(solve(prob));
+dist = (normvec * p01.' + d);
+normvec = normvec/dist;
+d = d/dist;
+
+hold off
+plot(X(Y==0,1),X(Y==0,2),'r.','MarkerSize',12)
+hold on
+plot(X(Y==1,1),X(Y==1,2),'b.','MarkerSize',12)
+
+t = -5:0.1:5;
+yt = -normvec(1)/normvec(2) * t - d/normvec(2);
+
+hold on
+plot(t,yt)
+
+yt2 = -normvec(1)/normvec(2) * t - (d-1)/normvec(2);
+
+hold on
+plot(t,yt2)
+
+yt3 = -normvec(1)/normvec(2) * t - (d+1)/normvec(2);
+
+hold on
+plot(t,yt3)
+
+
+% degress(qmax,:)
+% % p1
+% p01
+% % p2
+% p02
+% sqrt(sum((p01-p02).^2)) %  max(margin,[],1)
+% abs(2/normvec(2)) / sqrt((normvec(1)/normvec(2))^2+1)
+% 2 / sqrt(sum(normvec.^2))
+% % sum(normvec.^2)/2
+sMargVecW = normvec;
+sMargVecB = d;
+softMargin = sqrt(sum((p01-p02).^2));
+end
+
+function [Clss] = tsmsvm(X,sMargVecW,sMargVecB)
+% X = rdata_test
+
+projections = X * sMargVecW.' + sMargVecB;
+
+Clss = projections >= 0;
+
+t = -5:0.1:5;
+yt = -sMargVecW(1)/sMargVecW(2) * t - sMargVecB/sMargVecW(2);
+
+hold off
+plot(t,yt)
+
+hold on
+plot(X(Clss==0,1),X(Clss==0,2),'r.','MarkerSize',12)
+hold on
+plot(X(Clss==1,1),X(Clss==1,2),'b.','MarkerSize',12)
+end 
+
