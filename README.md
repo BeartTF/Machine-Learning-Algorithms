@@ -21,7 +21,7 @@ Tüm yöntemler detaylıca kağıda geçirilecek. <br />
 <br />
 FIX IT: <br />
 PCA: Tüm adımlar doğru gözüküyor ancak hazır MATLAB fonksiyonuyla farklı çıktı veriyor (özvektörler aynı doğrultuda olsalar da yönleri farklı ve bu yeni eksen takımındaki izdüşümleri bambaşka çıkıyor) <br />
-Hierarchical: Yorum eklemem lazım + çıktılarımı düzenlediğim satırları toplamalıyım <br />
+Hierarchical: Çıktılarımı düzenlediğim satırları toplamalıyım <br />
 Logistic: Net bir bias problemi var ve nasıl düzelteceğimi bilmiyorum + algoritma adımlarını bir şekilde tastikle <br />
 Decision Tree: İterasyonun ilk adımını gerçekledim ancak sonraki adımlar algoritmayı çok yavaşlatacak gibi duruyor. Çözüm bul. (Kodun en altında problem detayı yazıyor) <br />
 SVM: ~~Hard marjin bitti ancak destek vektörleri doğru konumlanmıyor~~ <br />
