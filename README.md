@@ -15,6 +15,7 @@ SVM algoritmasına kernel uygula. <br />
 SVM algoritmasında gradient eecent kullanmayı dene. <br />
 <br />
 Sunuma eklemeler yapılacak. (SVM etc.) <br />
+Koda yorum satırları eklenecek. <br />
 Tüm yöntemler detaylıca kağıda geçirilecek. <br />
 <br />
 <br />
