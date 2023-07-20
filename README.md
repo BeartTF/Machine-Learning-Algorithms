@@ -13,6 +13,7 @@ Sonra classification dosyasındaki lda, cat2num, num2cat ve ohe fonksiyonların�
 ~~SVM algoritmasını hard marjin için yaptım ve soft marjin için de yapmam lazım. Farkları biliyorum sadece üşenme ve başla.~~ <br />
 SVM algoritmasına kernel uygula. <br />
 SVM algoritmasında gradient eecent kullanmayı dene. <br />
+Fonksiyonları yaz: https://builtin.com/machine-learning/common-loss-functions <br />
 <br />
 Sunuma eklemeler yapılacak. (SVM etc.) <br />
 Koda yorum satırları eklenecek. (Hierarchical etc.) <br />
