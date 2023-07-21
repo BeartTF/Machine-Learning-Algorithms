@@ -14,7 +14,7 @@ Sonra classification dosyasındaki lda, cat2num, num2cat ve ohe fonksiyonların�
 SVM algoritmasına kernel uygula. <br />
 SVM algoritmasında gradient eecent kullanmayı dene. <br />
 RBF?? <br />
-Fonksiyonları yaz: https://builtin.com/machine-learning/common-loss-functions <br />
+Fonksiyonları yaz (regression): https://builtin.com/machine-learning/common-loss-functions <br />
 <br />
 Sunuma eklemeler yapılacak. (SVM etc.) <br />
 Koda yorum satırları eklenecek. (Hierarchical etc.) <br />
