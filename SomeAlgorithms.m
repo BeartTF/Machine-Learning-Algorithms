@@ -18,10 +18,25 @@ Betaski = 151;
 % % score hesabında problem var
 % scores = tpca(data_test,coeff2)
 
-rdata = randn(80,2);
-kfold = 10;
+% rdata = randn(80,2);
+% kfold = 10;
+% 
+% folds = crssvalid(rdata,kfold)
 
-folds = crssvalid(rdata,kfold)
+% Y = randn(20,1) >= 0;
+% Y_pred = rand(20,1);% >= 0.5;
+r = 3;
+e = rand(20,1);
+Y = floor(e*r)
+ee = rand(20,r);
+Y_pred = ee./(ee*ones(r,1))
+
+[Loss] = classLoss(Y,Y_pred,'log')
+
+Y = randn(20,1) >= 0;
+Y_pred = rand(20,1);
+
+[Loss1] = classLoss(Y,Y_pred,'hinge')
 
 function d = pairwise_distance(X)
 % X = data;
@@ -126,4 +141,26 @@ if c ~= 0
     end
     folds(folds>row) = 0;
 end
+end
+
+function [Loss] = classLoss(Y,Y_pred,type)
+[row,col] = size(Y_pred);
+
+Lm = 0;
+
+if prod(type == 'log',"all") == 1
+    for i = 1:col
+        Lm = sum(Lm + (Y==i-1).*log(Y_pred(:,i)));
+    end
+end
+
+if prod(type == 'hinge',"all") == 1
+    % Loss = sum(max(0,(Y==1)-Y.*Y_pred));
+    for i = 1:col
+        Lm = sum(max(0,(Y==i-1)-(Y==i-1).*Y_pred(:,i)));
+    end
+end
+
+Loss = -Lm/row;
+
 end
