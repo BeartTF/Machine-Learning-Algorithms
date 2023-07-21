@@ -13,6 +13,7 @@ Sonra classification dosyasındaki lda, cat2num, num2cat ve ohe fonksiyonların�
 ~~SVM algoritmasını hard marjin için yaptım ve soft marjin için de yapmam lazım. Farkları biliyorum sadece üşenme ve başla.~~ <br />
 SVM algoritmasına kernel uygula. <br />
 SVM algoritmasında gradient eecent kullanmayı dene. <br />
+RBF?? <br />
 Fonksiyonları yaz: https://builtin.com/machine-learning/common-loss-functions <br />
 <br />
 Sunuma eklemeler yapılacak. (SVM etc.) <br />
@@ -27,4 +28,3 @@ Logistic: Net bir bias problemi var ve nasıl düzelteceğimi bilmiyorum + algor
 Decision Tree: İterasyonun ilk adımını gerçekledim ancak sonraki adımlar algoritmayı çok yavaşlatacak gibi duruyor. Çözüm bul. (Kodun en altında problem detayı yazıyor) <br />
 SVM: ~~Hard marjin bitti ancak destek vektörleri doğru konumlanmıyor~~ <br />
 Linear Regression: Lambda seçimini araştır. <br />
-RBF?? <br />
