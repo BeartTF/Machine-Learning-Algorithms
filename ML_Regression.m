@@ -3,15 +3,17 @@ Betaski = 151;
 X = [90 60 90;90 90 30;60 60 60;60 60 90;30 30 30];
 [row,~] = size(X);
 data = [ones(row,1) X];
-r = randn(5,1)*10;
+r = randn(5,1)*10
 Y = 2.*data(:,1) + 4.*data(:,2) + 4.*data(:,3) + 8.*data(:,4) + r;
 learningRate = 0.0001;
 itnumber = 100000;
 lambda = 1;
+Xr = 90*rand(5,3);
 
 [B] = flinreg(X,Y,learningRate,itnumber)
 [B] = flinregL1(X,Y,learningRate,itnumber,lambda)
 [B] = flinregL2(X,Y,learningRate,itnumber,lambda)
+[Y_pred] = tlinreg(Xr,B)
 
 function [B] = flinreg(X,Y,learningRate,itnumber)
 [row,~] = size(X);
@@ -74,4 +76,9 @@ for i = 1:itnumber
 end
 
 % B
+end
+
+function [Y_pred] = tlinreg(Xr,B)
+[row,~] = size(Xr);
+Y_pred = [ones(row,1) Xr] * B;
 end
