@@ -5,7 +5,7 @@ This file was written for me to follow the progress of the project.
 
 
 
-SVR![image](https://github.com/BeartTF/Machine-Learning-Algorithms/assets/117646542/4a9ebf55-cfe7-4d48-8332-99e994a02972)
+![image](https://github.com/BeartTF/Machine-Learning-Algorithms/assets/117646542/4a9ebf55-cfe7-4d48-8332-99e994a02972)
 
 
 
