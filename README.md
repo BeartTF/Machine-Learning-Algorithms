@@ -4,7 +4,9 @@ Codes are written by me to learn deeper about machine learning algorithms.
 This file was written for me to follow the progress of the project.
 
 
-![image](https://github.com/BeartTF/Machine-Learning-Algorithms/assets/117646542/db98e6cb-61a1-4238-8cff-84880bf14884)
+
+SVR![image](https://github.com/BeartTF/Machine-Learning-Algorithms/assets/117646542/4a9ebf55-cfe7-4d48-8332-99e994a02972)
+
 
 
 ToDo: <br />
